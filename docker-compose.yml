@@ -1,0 +1,36 @@
+version: '2.4'
+
+services:
+
+  batch:
+    build:
+      context: batch
+      dockerfile: Dockerfile
+    volumes:
+      - ./batch:/root/batch
+      - /root/batch/node_modules
+    tty: true
+    command: bash
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+      SLACK_TOKEN: ${SLACK_TOKEN}
+
+  mysql:
+    build:
+      context: mysql
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ENTRYPOINT_INITDB: ${MYSQL_ENTRYPOINT_INITDB}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
