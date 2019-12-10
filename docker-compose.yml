@@ -10,10 +10,29 @@ services:
       - ./app:/root/app
       - /root/batch/node_modules
     tty: true
-    command: /bin/sh
+    command: /bin/bash
     links:
       - mysql:db
     environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+      SLACK_TOKEN: ${SLACK_TOKEN}
+
+  slackapi:
+    build:
+      context: slackapi
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - ./slackapi:/root/slackapi
+    command: /bin/bash
+    links:
+      - mysql:db
+    environment:
+      MYSQL_HOST: 'db'
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
