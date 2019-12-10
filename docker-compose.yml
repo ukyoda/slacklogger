@@ -2,15 +2,17 @@ version: '2.4'
 
 services:
 
-  batch:
+  app:
     build:
-      context: batch
+      context: app
       dockerfile: Dockerfile
     volumes:
-      - ./batch:/root/batch
+      - ./app:/root/app
       - /root/batch/node_modules
     tty: true
     command: /bin/sh
+    links:
+      - mysql:db
     environment:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
