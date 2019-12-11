@@ -31,3 +31,10 @@ class SlackAPI:
         """
         res = self.get('/channels.list', kwargs)
         return res.status_code, res.json()
+
+    def channelHistory(self, **kwargs):
+        """
+        チャンネルの投稿履歴を取得
+        """
+        res = self.get('/channels.history', kwargs)
+        return res.status_code, res.json()
