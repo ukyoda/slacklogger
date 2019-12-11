@@ -1,5 +1,5 @@
 from .Base import Base
-from sqlalchemy.sql.schema import Column
+from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql import text
 from sqlalchemy.sql.functions import current_timestamp
@@ -7,7 +7,7 @@ from sqlalchemy.sql.functions import current_timestamp
 class SlackMember(Base):
     __tablename__ = 'slack_members'
     id = Column(String(64), primary_key=True, comment='User ID(Workspace)')
-    team_id = Column(String(64), nullable=False, index=True, comment='Team ID')
+    team_id = Column(String(64), ForeignKey('slack_workspaces.id'), nullable=False, comment='Team ID')
     name = Column(String(128), nullable=False, comment='User Name')
     deleted = Column(Boolean, nullable=False, comment='Delete Flag')
     color = Column(String(64), nullable=False, comment='Color')

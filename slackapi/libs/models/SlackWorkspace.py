@@ -1,4 +1,5 @@
 from .Base import Base
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql import text
@@ -14,3 +15,4 @@ class SlackWorkspace(Base):
     api_token = Column(Text, nullable=False, comment='API Token')
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    members = relationship("SlackMember")
