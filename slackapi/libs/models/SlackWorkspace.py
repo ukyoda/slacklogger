@@ -15,4 +15,6 @@ class SlackWorkspace(Base):
     api_token = Column(Text, nullable=False, comment='API Token')
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-    members = relationship("SlackMember")
+    
+    members = relationship('SlackMember')
+    channels = relationship('SlackChannel')
