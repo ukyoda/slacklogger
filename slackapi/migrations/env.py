@@ -1,12 +1,13 @@
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-import os
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from libs.models import Base, db_url
 
 # this is the Alembic Config object, which provides

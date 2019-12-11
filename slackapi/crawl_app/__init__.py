@@ -2,39 +2,27 @@ from libs.models import *
 from libs.slack import SlackAPI
 from libs.utils.datetime import today_start, yesterday_start, tomorrow_start, get_start_dt, from_timestamp
 from datetime import timedelta
+
+from crawl_app.crawl_members import crawl_members
+
 import logging
 logger = logging.getLogger(__name__)
 
 def main():
+    logging.basicConfig(level=logging.INFO)
     workspaces = session.query(SlackWorkspace).all()
     for workspace in workspaces:
-        token = workspace.api_token
-        crawl_members(token)
-        crawl_channel(token, workspace.id)
+        logger.info('[workspace={}] Backup Start!!'.format(workspace.name}))
+
+        logger.info('[workspace={}] Update Member List'.format(workspace.name))
+        crawl_members(workspace.token)
+
+        logger.info('[workspace={}] Update Channel List'.format(workspace.name))
+        crawl_channel(workspace.token, workspace.id)
+
+        logger.info('[workspace={}] Backup End!!'.format(workspace.name))
     session.commit()
 
-def crawl_members(token):
-    """
-    メンバーリスト更新
-    """
-    api = SlackAPI(token)
-    code, res = api.usersList()
-    if code != 200:
-        logger.warn('API レスポンスエラー: code={}, response={}'.format(code, res))
-        return
-
-    for member in res['members']:
-        # 1件取得
-        slackMember = session \
-            .query(SlackMember) \
-            .filter(SlackMember.id==member['id']) \
-            .first()
-        if slackMember is None:
-            slackMember = SlackMember()
-            slackMember.setApiResponse(member)
-            session.add(slackMember)
-        else:
-            slackMember.setApiResponse(member)
         
 def crawl_channel(token, team_id):
     """

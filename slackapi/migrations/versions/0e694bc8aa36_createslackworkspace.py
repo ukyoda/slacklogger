@@ -5,10 +5,12 @@ Revises:
 Create Date: 2019-12-11 12:09:23.609581
 
 """
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 from alembic import op
 import sqlalchemy as sa
-from libs.slack.SlackAPI import SlackAPI
-import os
+from libs.slack import SlackAPI
 import json
 
 # revision identifiers, used by Alembic.
