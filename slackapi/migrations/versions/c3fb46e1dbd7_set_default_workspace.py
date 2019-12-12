@@ -26,9 +26,27 @@ def upgrade():
         return
     api = SlackAPI(token)
     code, res = api.teamInfo()
+    if code != 200:
+        raise RuntimeError('Migration Error(Seeder)')
     slackWorkspace = SlackWorkspace()
     slackWorkspace.setApiResponse(res['team'], token)
     session.add(slackWorkspace)
+    team = res['team']
+    record = dict(
+        id = team['id'],
+        name = team['name'],
+        domain = team['email_domain'],
+        image_34=team['icon']['image_34'],
+        image_44=team['icon']['image_44'],
+        image_68=team['icon']['image_68'],
+        image_88=team['icon']['image_88'],
+        image_102=team['icon']['image_102'],
+        image_132=team['icon']['image_132'],
+        api_token = token
+    )
+    table = sa.sql.table('slack_workspaces', 
+        sa.column('id'))
+    op.bulk_insert('slack_workspaces', [record])
 
 
 
