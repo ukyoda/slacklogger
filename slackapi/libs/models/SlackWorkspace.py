@@ -11,10 +11,27 @@ class SlackWorkspace(Base):
     name = Column(String(128), nullable=False, comment='Workspace Name')
     domain = Column(String(64), nullable=False, comment='Workspace Domain')
     email_domain = Column(String(64), nullable=False, comment='Workspace Domain')
-    icon = Column(Text, nullable=False, comment='Workspace Icons(JSON)')
+    image_34 = Column(Text, nullable=False, comment='Avatar Icon(34)')
+    image_44 = Column(Text, nullable=False, comment='Avatar Icon(44)')
+    image_68 = Column(Text, nullable=False, comment='Avatar Icon(68)')
+    image_88 = Column(Text, nullable=False, comment='Avatar Icon(88)')
+    image_102 = Column(Text, nullable=False, comment='Avatar Icon(102)')
+    image_132 = Column(Text, nullable=False, comment='Avatar Icon(132)')
     api_token = Column(Text, nullable=False, comment='API Token')
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-    
     members = relationship('SlackMember')
     channels = relationship('SlackChannel')
+
+    def setApiResponse(self, workspace, api_token):
+        self.id = workspace['id']
+        self.name = workspace['name']
+        self.domain = workspace['email_domain']
+        self.image_34=workspace['icon']['image_34']
+        self.image_44=workspace['icon']['image_44']
+        self.image_68=workspace['icon']['image_68']
+        self.image_88=workspace['icon']['image_88']
+        self.image_102=workspace['icon']['image_102']
+        self.image_132=workspace['icon']['image_132']
+        self.api_token = api_token
+        
