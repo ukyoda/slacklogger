@@ -5,6 +5,9 @@ from sqlalchemy.ext.declarative.api import declarative_base
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from os import getenv
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 dialect = "mysql"
 driver = "pymysql"
@@ -28,4 +31,4 @@ session = scoped_session(
     sessionmaker(autocommit=False, autoflush=False, bind=ENGINE)
 )
 
-Base = declarative_base()
+Base = db.Model
