@@ -7,11 +7,10 @@ from datetime import timedelta
 from libs.models import *
 from libs.slack import SlackAPI
 
-@click.command('slacklogging', help='指定したトークン／日にちのSlackユーザの情報を取得／更新')
+@click.command('updt_slackmembers', help='指定したトークン／日にちのSlackユーザの情報を取得／更新')
 @click.option('--token', required=True, help='Slackアクセストークン')
-@click.option('--target', required=True, help='日付指定(%Y%m%d)')
 @with_appcontext
-def task_updt_slackusers(token, target, commit=True):
+def task_updt_slackmembers(token, commit=True):
     api = SlackAPI(token)
     code, res = api.usersList()
     if code != 200:
