@@ -1,8 +1,8 @@
 """create_table
 
-Revision ID: 4e8ca9710216
+Revision ID: 206ff21bb217
 Revises: 
-Create Date: 2019-12-12 00:08:41.306133
+Create Date: 2019-12-14 08:01:05.150371
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4e8ca9710216'
+revision = '206ff21bb217'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.String(length=64), nullable=False, comment='Workspace ID'),
     sa.Column('name', sa.String(length=128), nullable=False, comment='Workspace Name'),
     sa.Column('domain', sa.String(length=64), nullable=False, comment='Workspace Domain'),
-    sa.Column('email_domain', sa.String(length=64), nullable=False, comment='Workspace Domain'),
+    sa.Column('email_domain', sa.String(length=64), nullable=True, comment='Workspace Domain'),
     sa.Column('image_34', sa.Text(), nullable=False, comment='Avatar Icon(34)'),
     sa.Column('image_44', sa.Text(), nullable=False, comment='Avatar Icon(44)'),
     sa.Column('image_68', sa.Text(), nullable=False, comment='Avatar Icon(68)'),
@@ -60,7 +60,7 @@ def upgrade():
     sa.Column('image_48', sa.Text(), nullable=False, comment='Avatar Icon(48)'),
     sa.Column('image_72', sa.Text(), nullable=False, comment='Avatar Icon(72)'),
     sa.Column('image_192', sa.Text(), nullable=False, comment='Avatar Icon(192)'),
-    sa.Column('image_512', sa.Text(), nullable=False, comment='Avatar Icon(512)'),
+    sa.Column('image_512', sa.Text(), nullable=False, comment='Avatar Icon(2512'),
     sa.Column('is_bot', sa.Boolean(), nullable=False, comment='Bot Flag'),
     sa.Column('is_owner', sa.Boolean(), nullable=False, comment='Owner Flag'),
     sa.Column('is_admin', sa.Boolean(), nullable=False, comment='Admin Flag'),

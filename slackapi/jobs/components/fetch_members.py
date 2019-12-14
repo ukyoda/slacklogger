@@ -22,6 +22,6 @@ def crawl_members(token):
         if slackMember is None:
             slackMember = SlackMember()
             slackMember.setApiResponse(member)
-            session.add(slackMember)
+            db.session.add(slackMember)
         else:
             slackMember.setApiResponse(member)

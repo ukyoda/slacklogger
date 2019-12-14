@@ -10,7 +10,7 @@ class SlackWorkspace(db.Model):
     id = Column(String(64), primary_key=True, comment='Workspace ID')
     name = Column(String(128), nullable=False, comment='Workspace Name')
     domain = Column(String(64), nullable=False, comment='Workspace Domain')
-    email_domain = Column(String(64), nullable=False, comment='Workspace Domain')
+    email_domain = Column(String(64), nullable=True, comment='Workspace Domain')
     image_34 = Column(Text, nullable=False, comment='Avatar Icon(34)')
     image_44 = Column(Text, nullable=False, comment='Avatar Icon(44)')
     image_68 = Column(Text, nullable=False, comment='Avatar Icon(68)')
@@ -34,4 +34,4 @@ class SlackWorkspace(db.Model):
         self.image_102=workspace['icon']['image_102']
         self.image_132=workspace['icon']['image_132']
         self.api_token = api_token
-        
+    

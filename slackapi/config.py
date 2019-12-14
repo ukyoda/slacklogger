@@ -4,7 +4,7 @@ from os import getenv
 class BaseConfig:
     # Database Settings
     # ------------------------------------------------------
-    SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}".format(
+    SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4".format(
         'mysql', 'pymysql',
         getenv('MYSQL_USER'), getenv('MYSQL_PASSWORD'),
         getenv('MYSQL_HOST'), getenv('MYSQL_PORT'),

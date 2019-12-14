@@ -20,6 +20,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_PORT: ${MYSQL_PORT}
       DEFAULT_SLACK_TOKEN: ${DEFAULT_SLACK_TOKEN}
+      TZ: ${TZ:-Asia/Tokyo}
 
   mysql:
     build:

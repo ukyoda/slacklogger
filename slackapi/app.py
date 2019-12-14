@@ -1,8 +1,11 @@
 from flask import Flask
+import flask
 from jobs import job
 from config import BaseConfig
 from libs.models import db
+import logging
 
+logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
 
