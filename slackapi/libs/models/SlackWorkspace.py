@@ -18,10 +18,12 @@ class SlackWorkspace(db.Model):
     image_102 = Column(Text, nullable=False, comment='Avatar Icon(102)')
     image_132 = Column(Text, nullable=False, comment='Avatar Icon(132)')
     api_token = Column(Text, nullable=False, comment='API Token')
+    active_flag = Column(Text, nullable=False, default=True, comment='Crawler Active Flag')
+    delete_flag = Column(Boolean, nullable=False, default=False, comment='Delete flag')
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-    members = relationship('SlackMember')
-    channels = relationship('SlackChannel')
+    members = relationship('SlackMember', order_by='asc(SlackMember.real_name)', lazy='dynamic')
+    channels = relationship('SlackChannel', order_by='asc(SlackChannel.created)', lazy='dynamic')
 
     def setApiResponse(self, workspace, api_token):
         self.id = workspace['id']

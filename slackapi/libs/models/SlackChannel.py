@@ -16,6 +16,7 @@ class SlackChannel(db.Model):
     purpose = Column(Text, comment='Channel Purpose')
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    workspace = relationship('SlackWorkspace', backref='slack_channels')
     
     def setApiResponse(self, channel, team_id):
         self.id = channel['id']
