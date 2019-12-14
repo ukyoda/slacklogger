@@ -7,10 +7,12 @@ from datetime import timedelta
 from libs.models import *
 from libs.slack import SlackAPI
 
-@click.command('updt_slackmembers', help='指定したトークン／日にちのSlackユーザの情報を取得／更新')
-@click.option('--token', required=True, help='Slackアクセストークン')
+@click.command('updt_slackmembers', help='指定したトークンのSlackユーザの情報を取得／更新')
+@click.option('--workspace_id', required=True, help='SlackのWorkspace ID')
 @with_appcontext
-def task_updt_slackmembers(token, commit=True):
+def task_updt_slackmembers(workspace_id, commit=True):
+    workspace = SlackWorkspace.query.filter(SlackWorkspace.id == workspace_id).one()
+    token = workspace.api_token
     api = SlackAPI(token)
     code, res = api.usersList()
     if code != 200:
