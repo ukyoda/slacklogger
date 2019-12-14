@@ -9,26 +9,4 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-dialect = "mysql"
-driver = "pymysql"
-username = getenv('MYSQL_USER')
-password = getenv('MYSQL_PASSWORD')
-host = getenv('MYSQL_HOST')
-port = getenv('MYSQL_PORT')
-database = getenv('MYSQL_DATABASE')
-db_url = "{}+{}://{}:{}@{}:{}/{}".format(
-    dialect,
-    driver,
-    username,
-    password,
-    host,
-    port,
-    database
-)
-
-ENGINE = create_engine(db_url, echo=False)
-session = scoped_session(
-    sessionmaker(autocommit=False, autoflush=False, bind=ENGINE)
-)
-
 Base = db.Model

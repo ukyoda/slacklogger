@@ -16,7 +16,7 @@ from config import BaseConfig
 config = context.config
 
 # URLセット
-config.set_main_option('sqlalchemy.url', BaseConfig.db_url)
+config.set_main_option('sqlalchemy.url', BaseConfig.SQLALCHEMY_DATABASE_URI)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
