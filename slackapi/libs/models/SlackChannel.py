@@ -1,4 +1,4 @@
-from .Base import Base
+from .Base import db
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import *
@@ -6,7 +6,7 @@ from sqlalchemy.sql import text
 from sqlalchemy.sql.functions import current_timestamp
 from ..utils.datetime import from_timestamp
 
-class SlackChannel(Base):
+class SlackChannel(db.Model):
     __tablename__ = 'slack_channels'
     id = Column(String(64), primary_key=True, comment='Channel ID')
     team_id = Column(String(64), ForeignKey('slack_workspaces.id'), comment='Workspace ID')

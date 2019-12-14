@@ -1,11 +1,11 @@
-from .Base import Base
+from .Base import db
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql import text
 from sqlalchemy.sql.functions import current_timestamp
 
-class SlackWorkspace(Base):
+class SlackWorkspace(db.Model):
     __tablename__ = 'slack_workspaces'
     id = Column(String(64), primary_key=True, comment='Workspace ID')
     name = Column(String(128), nullable=False, comment='Workspace Name')

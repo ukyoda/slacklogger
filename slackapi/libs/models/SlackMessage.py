@@ -1,11 +1,11 @@
-from .Base import Base
+from .Base import db
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql import text
 from sqlalchemy.sql.functions import current_timestamp
 
-class SlackMessage(Base):
+class SlackMessage(db.Model):
     __tablename__ = 'slack_messages'
     id = Column(String(64), primary_key=True, comment='Message ID')
     channel_id = Column(String(64), ForeignKey('slack_channels.id'), comment='Channel ID')

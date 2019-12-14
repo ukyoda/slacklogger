@@ -1,10 +1,10 @@
-from .Base import Base
+from .Base import db
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql import text
 from sqlalchemy.sql.functions import current_timestamp
 
-class SlackMember(Base):
+class SlackMember(db.Model):
     __tablename__ = 'slack_members'
     id = Column(String(64), primary_key=True, comment='User ID(Workspace)')
     team_id = Column(String(64), ForeignKey('slack_workspaces.id'), nullable=False, comment='Team ID')
