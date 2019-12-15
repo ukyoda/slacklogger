@@ -10,7 +10,9 @@ from libs.models import db, SlackWorkspace
 @with_appcontext
 def task_regist_slack(token):
     """デフォルトSlackTokeに従い、ワークスペースを登録"""
+    run(token)
 
+def run(token):
     # データ更新
     api = SlackAPI(token)
     code, res = api.teamInfo()

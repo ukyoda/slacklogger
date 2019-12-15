@@ -11,7 +11,10 @@ from libs.slack import SlackAPI
 @click.option('--from_date', required=True, help='メッセージ取得開始日(YYYYmmddで指定)')
 @click.option('--to_date', required=False, help='メッセージ取得完了日(YYYYmmddで指定)')
 @with_appcontext
-def task_updt_slackdailylog(channel_id, from_date, to_date, commit=True):
+def task_updt_slackdailylog(channel_id, from_date, to_date=None, commit=True):
+    run(channel_id, from_date, to_date=to_date, commit=commit)
+
+def run(channel_id, from_date, to_date=None, commit=True):
     # 必要な情報をDBから取得
     slackChannel = SlackChannel.query.filter(SlackChannel.id==channel_id).one()
     token = slackChannel.workspace.api_token

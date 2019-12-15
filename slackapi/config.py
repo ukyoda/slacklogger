@@ -12,3 +12,13 @@ class BaseConfig:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # Celery Settings
+    # ------------------------------------------------------
+    CELERY_RESULT_BACKEND = 'redis://redis:6379'
+    CELERY_BROKER_URL = 'redis://redis:6379'
+
+class SchedulerConfig:
+    job_slacklogging = {
+        'job': 'slacklogging',
+        'crontab': '30 03 * * *'
+    }
