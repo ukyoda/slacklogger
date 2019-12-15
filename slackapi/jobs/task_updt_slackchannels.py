@@ -11,6 +11,9 @@ from libs.slack import SlackAPI
 @click.option('--workspace_id', required=True, help='SlackワークスペースID')
 @with_appcontext
 def task_updt_slackchannels(workspace_id, commit=True):
+    run(workspace_id, commit=commit)
+
+def run(workspace_id, commit=True):
     slackWorkspace = SlackWorkspace.query.filter(SlackWorkspace.id==workspace_id).one()
     token = slackWorkspace.api_token
     api = SlackAPI(token)

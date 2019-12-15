@@ -5,6 +5,7 @@ from jobs.task_slacklogging import task_slacklogging
 from jobs.task_updt_slackmembers import task_updt_slackmembers
 from jobs.task_updt_slackchannels import task_updt_slackchannels
 from jobs.task_updt_slackdailylog import task_updt_slackdailylog
+from jobs.task_slacklogging import task_slacklogging
 
 # jobグループを作成
 job = AppGroup('job')
@@ -16,3 +17,4 @@ job.add_command(task_slacklogging)
 job.add_command(task_updt_slackmembers)
 job.add_command(task_updt_slackchannels)
 job.add_command(task_updt_slackdailylog)
+job.add_command(task_slacklogging)
