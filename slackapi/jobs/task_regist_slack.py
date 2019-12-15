@@ -30,4 +30,4 @@ def task_regist_slack(token):
         app.logger.info('Update')
         ws.setApiResponse(res['team'], token)
     db.session.commit()
-    app.logger.info('Complete !!')
+    app.logger.info(f'Complete(WorkspaceID={ws.id}) !!')

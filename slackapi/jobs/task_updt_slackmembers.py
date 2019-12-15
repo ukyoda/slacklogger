@@ -29,6 +29,5 @@ def task_updt_slackmembers(workspace_id, commit=True):
             db.session.add(slackMember)
         else:
             slackMember.setApiResponse(member, workspace.id)
-        import pdb; pdb.set_trace()
     if commit:
         db.session.commit()        

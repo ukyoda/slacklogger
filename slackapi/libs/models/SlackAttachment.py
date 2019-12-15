@@ -30,6 +30,6 @@ class SlackAttachment(db.Model):
         self.title = attachment['title']
         self.text = attachment['text']
         self.original_url = attachment['original_url']
-        self.thubm_url = attachment['thumb_url']
+        self.thubm_url = attachment['thumb_url'] if 'thumb_url' in attachment else None
         self.service_icon = attachment['service_icon']
     
