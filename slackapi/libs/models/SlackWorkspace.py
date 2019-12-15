@@ -22,8 +22,8 @@ class SlackWorkspace(db.Model):
     delete_flag = Column(Boolean, nullable=False, default=False, comment='Delete flag')
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
-    members = relationship('SlackMember', order_by='asc(SlackMember.real_name)', lazy='dynamic')
-    channels = relationship('SlackChannel', order_by='asc(SlackChannel.created)', lazy='dynamic')
+    # members = relationship('SlackMember', order_by='asc(SlackMember.real_name)', lazy='dynamic')
+    # channels = relationship('SlackChannel', order_by='asc(SlackChannel.created)', lazy='dynamic')
 
     def setApiResponse(self, workspace, api_token):
         self.id = workspace['id']
