@@ -1,8 +1,8 @@
 """create_tables
 
-Revision ID: 1706ca98cb4f
+Revision ID: 18083b656fc0
 Revises: 
-Create Date: 2019-12-15 17:54:49.200604
+Create Date: 2019-12-15 18:32:53.036743
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1706ca98cb4f'
+revision = '18083b656fc0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -38,7 +38,7 @@ def upgrade():
     )
     op.create_table('slack_channels',
     sa.Column('id', sa.String(length=128), nullable=False, comment='Primary Key({team_id}/{channel_id})'),
-    sa.Column('channel_id', sa.String(length=64), nullable=True, comment='Channel ID'),
+    sa.Column('local_id', sa.String(length=64), nullable=True, comment='Channel ID'),
     sa.Column('team_id', sa.String(length=64), nullable=True, comment='Workspace ID'),
     sa.Column('name', sa.String(length=128), nullable=False, comment='Channel Name'),
     sa.Column('created', sa.DateTime(), nullable=False, comment='Channel Create Datetime'),
@@ -49,7 +49,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['team_id'], ['slack_workspaces.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_slack_channels_channel_id'), 'slack_channels', ['channel_id'], unique=False)
+    op.create_index(op.f('ix_slack_channels_local_id'), 'slack_channels', ['local_id'], unique=False)
     op.create_table('slack_members',
     sa.Column('id', sa.String(length=128), nullable=False, comment='Primary Key({team_id}/{user_id})'),
     sa.Column('user_id', sa.String(length=64), nullable=True, comment='Slack UserID'),
@@ -84,8 +84,8 @@ def upgrade():
     sa.Column('thread_ts', sa.String(length=64), nullable=True, comment='Thread Timestamp'),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), nullable=False),
-    sa.ForeignKeyConstraint(['channel_id'], ['slack_channels.channel_id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['slack_members.user_id'], ),
+    sa.ForeignKeyConstraint(['channel_id'], ['slack_channels.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['slack_members.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_slack_messages_ts'), 'slack_messages', ['ts'], unique=False)
@@ -132,7 +132,7 @@ def downgrade():
     op.drop_table('slack_messages')
     op.drop_index(op.f('ix_slack_members_user_id'), table_name='slack_members')
     op.drop_table('slack_members')
-    op.drop_index(op.f('ix_slack_channels_channel_id'), table_name='slack_channels')
+    op.drop_index(op.f('ix_slack_channels_local_id'), table_name='slack_channels')
     op.drop_table('slack_channels')
     op.drop_table('slack_workspaces')
     # ### end Alembic commands ###

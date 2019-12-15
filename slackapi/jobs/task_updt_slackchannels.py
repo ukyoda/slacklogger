@@ -21,7 +21,7 @@ def task_updt_slackchannels(workspace_id, commit=True):
     for channel in res['channels']:
         # 1件取得
         slackChannel = SlackChannel.query \
-            .filter(SlackChannel.channel_id==channel['id']) \
+            .filter(SlackChannel.id==f'{workspace_id}/{channel["id"]}') \
             .first()
         if slackChannel is None:
             slackChannel = SlackChannel()

@@ -12,8 +12,8 @@ class SlackMessage(db.Model):
     """
     __tablename__ = 'slack_messages'
     id = Column(String(128), primary_key=True, comment='Message ID({workspace_id}/{channel_id}/{ts})')
-    channel_id = Column(String(64), ForeignKey('slack_channels.channel_id'), comment='Channel ID')
-    user_id = Column(String(64), ForeignKey('slack_members.user_id'), comment='User ID(Workspace)')
+    channel_id = Column(String(64), ForeignKey('slack_channels.id'), comment='Channel ID')
+    user_id = Column(String(64), ForeignKey('slack_members.id'), comment='User ID(Workspace)')
     text = Column(Text, nullable=False, comment='Text Body')
     ts = Column(String(64), nullable=False, index=True, comment='Post Timestamp')
     thread_ts = Column(String(64), comment='Thread Timestamp')
@@ -23,9 +23,9 @@ class SlackMessage(db.Model):
     attachments = relationship('SlackAttachment', order_by='asc(SlackAttachment.id)', lazy='dynamic')
 
     def setApiResponse(self, message, team_id, channel_id):
-        self.id = f'{team_id}/{channel_id}/{message["ts"]}'
+        self.id = f'{channel_id}/{message["ts"]}'
         self.channel_id = channel_id
-        self.user_id = message['user']
+        self.user_id = f'{team_id}/{message["user"]}'
         self.text = message['text']
         self.ts = message['ts']
         if 'thread_ts' in message:

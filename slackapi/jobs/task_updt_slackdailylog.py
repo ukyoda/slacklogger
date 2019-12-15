@@ -14,11 +14,11 @@ from libs.slack import SlackAPI
 @with_appcontext
 def task_updt_slackdailylog(workspace_id, channel_id, from_date, to_date, commit=True):
     slackChannel = SlackChannel.query.filter(
-        SlackChannel.channel_id==channel_id, SlackChannel.team_id==workspace_id).one()
+        SlackChannel.local_id==channel_id, SlackChannel.team_id==workspace_id).one()
     # APIトークン
     token = slackChannel.workspace.api_token
     # チャンネルID
-    channel_id = slackChannel.channel_id
+    channel_id = slackChannel.local_id
     team_id = slackChannel.workspace.id
     app.logger.info(f'{slackChannel.workspace.name}::{slackChannel.name}')
     api = SlackAPI(token)
@@ -32,13 +32,13 @@ def task_updt_slackdailylog(workspace_id, channel_id, from_date, to_date, commit
                                    count=1000)
     for message in res['messages']:
         slackMessage = SlackMessage.query.filter(
-            SlackMessage.channel_id==channel_id, SlackMessage.ts == message['ts']).first()
+            SlackMessage.channel_id == slackChannel.id, SlackMessage.ts == message['ts']).first()
         if slackMessage is None:
             slackMessage = SlackMessage()
-            slackMessage.setApiResponse(message, team_id, channel_id)
+            slackMessage.setApiResponse(message, team_id, slackChannel.id)
             db.session.add(slackMessage)
         else:
-            slackMessage.setApiResponse(message, team_id, channel_id)
+            slackMessage.setApiResponse(message, team_id, slackChannel.id)
         if 'attachments' in message:
             _setattachment(slackMessage.id, message['attachments'])
         if 'files' in message:
