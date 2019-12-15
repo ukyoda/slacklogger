@@ -8,7 +8,8 @@ from ..utils.datetime import from_timestamp
 
 class SlackChannel(db.Model):
     __tablename__ = 'slack_channels'
-    id = Column(String(64), primary_key=True, comment='Channel ID')
+    id = Column(String(128), primary_key=True, comment='Primary Key({team_id}/{channel_id})')
+    channel_id = Column(String(64), index=True, comment='Channel ID')
     team_id = Column(String(64), ForeignKey('slack_workspaces.id'), comment='Workspace ID')
     name = Column(String(128), nullable=False, comment='Channel Name')
     created = Column(DateTime, nullable=False, comment='Channel Create Datetime')
@@ -19,7 +20,8 @@ class SlackChannel(db.Model):
     workspace = relationship('SlackWorkspace', backref='slack_channels')
     
     def setApiResponse(self, channel, team_id):
-        self.id = channel['id']
+        self.id = f'{team_id}/{channel["id"]}'
+        self.channel_id = channel['id']
         self.team_id = team_id
         self.name = channel['name']
         self.created = from_timestamp(channel['created'])

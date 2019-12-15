@@ -6,7 +6,8 @@ from sqlalchemy.sql.functions import current_timestamp
 
 class SlackMember(db.Model):
     __tablename__ = 'slack_members'
-    id = Column(String(64), primary_key=True, comment='User ID(Workspace)')
+    id = Column(String(128), primary_key=True, comment='Primary Key({team_id}/{user_id})')
+    user_id = Column(String(64), index=True, comment='Slack UserID')
     team_id = Column(String(64), ForeignKey('slack_workspaces.id'), nullable=False, comment='Team ID')
     name = Column(String(128), nullable=False, comment='User Name')
     deleted = Column(Boolean, nullable=False, comment='Delete Flag')
@@ -26,7 +27,7 @@ class SlackMember(db.Model):
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
-    def setApiResponse(self, member):
+    def setApiResponse(self, member, team_id):
         """
         Slack APIのレスポンス結果をモデルにセット
         
@@ -34,8 +35,9 @@ class SlackMember(db.Model):
             * member
                 * Slackのusers.listのmembersリストの1要素
         """
-        self.id=member['id']
-        self.team_id=member['team_id']
+        self.id=f'{team_id}/{member["id"]}'
+        self.user_id=member['id']
+        self.team_id=team_id
         self.name=member['name']
         self.deleted=member['deleted']
         self.color=member['color']

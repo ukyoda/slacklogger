@@ -21,13 +21,13 @@ def task_updt_slackmembers(workspace_id, commit=True):
     for member in res['members']:
         # 1件取得
         slackMember = SlackMember.query \
-            .filter(SlackMember.id==member['id']) \
+            .filter(SlackMember.user_id==member['id']) \
             .first()
         if slackMember is None:
             slackMember = SlackMember()
-            slackMember.setApiResponse(member)
+            slackMember.setApiResponse(member, workspace.id)
             db.session.add(slackMember)
         else:
-            slackMember.setApiResponse(member)
+            slackMember.setApiResponse(member, workspace.id)
     if commit:
         db.session.commit()        
