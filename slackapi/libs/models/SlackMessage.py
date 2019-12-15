@@ -5,7 +5,7 @@ from sqlalchemy.sql.sqltypes import *
 from sqlalchemy.sql import text as _text
 from sqlalchemy.sql.functions import current_timestamp
 from .SlackAttachment import SlackAttachment
-
+import datetime
 class SlackMessage(db.Model):
     """
     Slackメッセージ情報
@@ -16,6 +16,7 @@ class SlackMessage(db.Model):
     user_id = Column(String(64), ForeignKey('slack_members.id'), comment='User ID(Workspace)')
     text = Column(Text, nullable=False, comment='Text Body')
     ts = Column(String(64), nullable=False, index=True, comment='Post Timestamp')
+    post_time = Column(DateTime, nullable=False, index=True, comment='Post Datetime')
     thread_ts = Column(String(64), comment='Thread Timestamp')
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=_text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
@@ -30,5 +31,6 @@ class SlackMessage(db.Model):
         self.user_id = f'{team_id}/{message["user"]}'
         self.text = message['text']
         self.ts = message['ts']
+        self.post_time = datetime.datetime.fromtimestamp(float(self.ts))
         if 'thread_ts' in message:
             self.thread_ts = float(message['thread_ts'])
