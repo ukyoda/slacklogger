@@ -21,6 +21,8 @@ class SlackMessage(db.Model):
     updated_at = Column(DateTime, nullable=False, server_default=_text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
     files = relationship('SlackFile', order_by='asc(SlackFile.filetype)', lazy='dynamic')
     attachments = relationship('SlackAttachment', order_by='asc(SlackAttachment.id)', lazy='dynamic')
+    author = relationship('SlackMember', order_by='asc(SlackMember.real_name)', backref='slack_members')
+    channel = relationship('SlackChannel', order_by='asc(SlackChannel.created)', backref='slack_channels')
 
     def setApiResponse(self, message, team_id, channel_id):
         self.id = f'{channel_id}/{message["ts"]}'
