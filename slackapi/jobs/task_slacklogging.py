@@ -28,14 +28,14 @@ def run(from_date, to_date):
     for workspace in workspaces:
         app.logger.info(f'Processing: {workspace.id}')
         app.logger.info('========== Update Slack Members ==========')
-        run_updt_slackmembers(workspace.id)
+        run_updt_slackmembers(workspace.id, commit=False)
         app.logger.info('========== Update Slack Channels ==========')
-        run_updt_slackchannels(workspace_id=workspace.id)
+        run_updt_slackchannels(workspace_id=workspace.id, commit=False)
         app.logger.info('========== Update Slack Messages ==========')
         channels = SlackChannel.query \
             .filter(SlackChannel.team_id==workspace.id) \
             .all()
         for channel in channels:
-            run_updt_slackdailylog(channel.id, from_date, to_date)
-
+            run_updt_slackdailylog(channel.id, from_date, to_date, commit=False)
+        db.session.commit()
         app.logger.info(f'---------- End({workspace.id}) ----------')
