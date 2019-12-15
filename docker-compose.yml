@@ -12,6 +12,28 @@ services:
     command: /bin/bash
     links:
       - mysql:db
+      - redis:redis
+    environment:
+      MYSQL_HOST: 'db'
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+      DEFAULT_SLACK_TOKEN: ${DEFAULT_SLACK_TOKEN}
+      TZ: ${TZ:-Asia/Tokyo}
+
+  scheduler:
+    build:
+      context: slackapi
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - ./slackapi:/root/slackapi
+    command: python3 job_scheduler.py
+    links:
+      - mysql:db
+      - redis:redis
     environment:
       MYSQL_HOST: 'db'
       MYSQL_USER: ${MYSQL_USER}
@@ -40,3 +62,11 @@ services:
       - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
     ports:
       - 3307:3306
+
+  redis:
+    build:
+      context: redis
+      dockerfile: Dockerfile
+    volumes:
+      - ./data/redis:/data
+    
