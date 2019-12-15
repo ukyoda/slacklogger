@@ -27,7 +27,9 @@ def task_updt_slackmembers(workspace_id, commit=True):
             slackMember = SlackMember()
             slackMember.setApiResponse(member, workspace.id)
             db.session.add(slackMember)
+            app.logger.info(f'New Member: {slackMember.real_name}({slackMember.id})')
         else:
             slackMember.setApiResponse(member, workspace.id)
+            app.logger.info(f'Update Member: {slackMember.real_name}({slackMember.id})')
     if commit:
         db.session.commit()        

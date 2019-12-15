@@ -7,26 +7,23 @@ from libs.models import *
 from libs.slack import SlackAPI
 
 @click.command('updt_slackdailylog', help='指定したトークンのSlackチャンネルの情報を取得／更新')
-@click.option('--workspace_id', required=True, help='SlackワークスペースID')
-@click.option('--channel_id', required=True, help='チャンネルID')
+@click.option('--channel_id', required=True, help='チャンネルID(team_id/local_id)')
 @click.option('--from_date', required=True, help='メッセージ取得開始日(YYYYmmddで指定)')
 @click.option('--to_date', required=False, help='メッセージ取得完了日(YYYYmmddで指定)')
 @with_appcontext
-def task_updt_slackdailylog(workspace_id, channel_id, from_date, to_date, commit=True):
-    slackChannel = SlackChannel.query.filter(
-        SlackChannel.local_id==channel_id, SlackChannel.team_id==workspace_id).one()
-    # APIトークン
+def task_updt_slackdailylog(channel_id, from_date, to_date, commit=True):
+    # 必要な情報をDBから取得
+    slackChannel = SlackChannel.query.filter(SlackChannel.id==channel_id).one()
     token = slackChannel.workspace.api_token
-    # チャンネルID
-    channel_id = slackChannel.local_id
-    team_id = slackChannel.workspace.id
     app.logger.info(f'{slackChannel.workspace.name}::{slackChannel.name}')
-    api = SlackAPI(token)
 
     # 日付
     oldest = datetime.strptime(from_date, '%Y%m%d')
     latest = datetime.strptime(to_date, '%Y%m%d') if to_date is not None else oldest + timedelta(days=1)
-    code, res = api.channelHistory(channel=channel_id,
+
+    # APIコール
+    api = SlackAPI(token)
+    code, res = api.channelHistory(channel=slackChannel.local_id,
                                    oldest=oldest.timestamp(), 
                                    latest=latest.timestamp(),
                                    count=1000)
@@ -35,10 +32,10 @@ def task_updt_slackdailylog(workspace_id, channel_id, from_date, to_date, commit
             SlackMessage.channel_id == slackChannel.id, SlackMessage.ts == message['ts']).first()
         if slackMessage is None:
             slackMessage = SlackMessage()
-            slackMessage.setApiResponse(message, team_id, slackChannel.id)
+            slackMessage.setApiResponse(message, slackChannel.team_id, slackChannel.id)
             db.session.add(slackMessage)
         else:
-            slackMessage.setApiResponse(message, team_id, slackChannel.id)
+            slackMessage.setApiResponse(message, slackChannel.team_id, slackChannel.id)
         if 'attachments' in message:
             _setattachment(slackMessage.id, message['attachments'])
         if 'files' in message:

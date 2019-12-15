@@ -27,7 +27,9 @@ def task_updt_slackchannels(workspace_id, commit=True):
             slackChannel = SlackChannel()
             slackChannel.setApiResponse(channel, slackWorkspace.id)
             db.session.add(slackChannel)
+            app.logger.info(f'New Channel: {slackChannel.name}({slackChannel.id}) ')
         else:
             slackChannel.setApiResponse(channel, slackWorkspace.id)
+            app.logger.info(f'Update Channel: {slackChannel.name}({slackChannel.id}) ')
     if commit:
-        db.session.commit()        
+        db.session.commit()
