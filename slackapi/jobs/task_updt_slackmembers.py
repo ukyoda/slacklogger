@@ -21,7 +21,7 @@ def task_updt_slackmembers(workspace_id, commit=True):
     for member in res['members']:
         # 1件取得
         slackMember = SlackMember.query \
-            .filter(SlackMember.user_id==member['id']) \
+            .filter(SlackMember.local_id==member['id'], SlackMember.team_id==workspace_id) \
             .first()
         if slackMember is None:
             slackMember = SlackMember()

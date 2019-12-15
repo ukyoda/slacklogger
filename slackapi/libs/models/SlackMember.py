@@ -7,7 +7,7 @@ from sqlalchemy.sql.functions import current_timestamp
 class SlackMember(db.Model):
     __tablename__ = 'slack_members'
     id = Column(String(128), primary_key=True, comment='Primary Key({team_id}/{user_id})')
-    user_id = Column(String(64), index=True, comment='Slack UserID')
+    local_id = Column(String(64), index=True, comment='Slack UserID')
     team_id = Column(String(64), ForeignKey('slack_workspaces.id'), nullable=False, comment='Team ID')
     name = Column(String(128), nullable=False, comment='User Name')
     deleted = Column(Boolean, nullable=False, comment='Delete Flag')
@@ -36,7 +36,7 @@ class SlackMember(db.Model):
                 * Slackのusers.listのmembersリストの1要素
         """
         self.id=f'{team_id}/{member["id"]}'
-        self.user_id=member['id']
+        self.local_id=member['id']
         self.team_id=team_id
         self.name=member['name']
         self.deleted=member['deleted']
