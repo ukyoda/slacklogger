@@ -14,11 +14,12 @@ from libs.slack import SlackAPI
 @with_appcontext
 def task_updt_slackdailylog(workspace_id, channel_id, from_date, to_date, commit=True):
     slackChannel = SlackChannel.query.filter(
-        SlackChannel.id==channel_id, SlackChannel.team_id==workspace_id).one()
+        SlackChannel.channel_id==channel_id, SlackChannel.team_id==workspace_id).one()
     # APIトークン
     token = slackChannel.workspace.api_token
     # チャンネルID
-    channel_id = slackChannel.id
+    channel_id = slackChannel.channel_id
+    team_id = slackChannel.workspace.id
     app.logger.info(f'{slackChannel.workspace.name}::{slackChannel.name}')
     api = SlackAPI(token)
 
@@ -29,23 +30,45 @@ def task_updt_slackdailylog(workspace_id, channel_id, from_date, to_date, commit
                                    oldest=oldest.timestamp(), 
                                    latest=latest.timestamp(),
                                    count=1000)
-    import json
-    with open('tmp/check.json', 'w') as f:
-        f.write(json.dumps(res, indent=2, ensure_ascii=False))
-    # code, res = api.channelsList()
-    # if code != 200:
-    #     logger.warn('API レスポンスエラー: code={}, response={}'.format(code, res))
-    #     return 1
-    # for channel in res['channels']:
-    #     # 1件取得
-    #     slackChannel = SlackChannel.query \
-    #         .filter(SlackChannel.id==channel['id']) \
-    #         .first()
-    #     if slackChannel is None:
-    #         slackChannel = SlackChannel()
-    #         slackChannel.setApiResponse(channel, slackWorkspace.id)
-    #         db.session.add(slackChannel)
-    #     else:
-    #         slackChannel.setApiResponse(channel, slackWorkspace.id)
-    # if commit:
-    #     db.session.commit()        
+    for message in res['messages']:
+        slackMessage = SlackMessage.query.filter(
+            SlackMessage.channel_id==channel_id, SlackMessage.ts == message['ts']).first()
+        if slackMessage is None:
+            slackMessage = SlackMessage()
+            slackMessage.setApiResponse(message, team_id, channel_id)
+            db.session.add(slackMessage)
+        else:
+            slackMessage.setApiResponse(message, team_id, channel_id)
+        if 'attachments' in message:
+            _setattachment(slackMessage.id, message['attachments'])
+        if 'files' in message:
+            _setfiles(slackMessage.id, message['files'])
+
+    if commit:
+        db.session.commit()
+
+def _setattachment(message_id, attachments):
+    for attachment in attachments:
+        slackAttachment = SlackAttachment.query \
+            .filter(SlackAttachment.message_id == message_id) \
+            .filter(SlackAttachment.attachment_id == attachment['id']) \
+            .first()
+        if slackAttachment is None:
+            slackAttachment = SlackAttachment()
+            slackAttachment.setApiResponse(attachment, message_id)
+            db.session.add(slackAttachment)
+        else:
+            slackAttachment.setApiResponse(attachment, message_id)
+
+def _setfiles(message_id, files):
+    for file in files:
+        slackFile = SlackFile.query \
+            .filter(SlackFile.message_id == message_id) \
+            .filter(SlackFile.file_id == file['id']) \
+            .first()
+        if slackFile is None:
+            slackFile = SlackFile()
+            slackFile.setApiResponse(file, message_id)
+            db.session.add(slackFile)
+        else:
+            slackFile.setApiResponse(file, message_id)
