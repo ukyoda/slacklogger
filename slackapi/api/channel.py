@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from libs.models import SlackChannel, SlackChannelSchema, NoResultFound
-
 from flask import abort
+
 class ApiChannel(Resource):
     
     def get(self, workspace_id, local_id=None):

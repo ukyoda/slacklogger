@@ -26,11 +26,12 @@ from flask_restful import Api
 from api import *
 api = Api(app, prefix='/api/v1')
 # api.add_resource(ApiWorkspace, '/workspace')
-api.add_resource(ApiWorkspace, '/workspace', endpoint='workspaces')
-api.add_resource(ApiWorkspace, '/workspace/<string:workspace_id>', endpoint='workspace')
-api.add_resource(ApiChannel, '/channel/<string:workspace_id>', endpoint='channels')
-api.add_resource(ApiChannel, '/channel/<string:workspace_id>/<string:local_id>', endpoint='channel')
-
+api.add_resource(ApiWorkspace, '/slack/ws', endpoint='workspaces')
+api.add_resource(ApiWorkspace, '/slack/ws/<string:workspace_id>', endpoint='workspace')
+api.add_resource(ApiChannel, '/slack/ch/<string:workspace_id>', endpoint='channels')
+api.add_resource(ApiChannel, '/slack/ch/<string:workspace_id>/<string:local_id>', endpoint='channel')
+api.add_resource(ApiMessage, '/slack/msg/<string:workspace_id>/<string:ch_local_id>', endpoint='messages')
+api.add_resource(ApiMessage, '/slack/msg/<string:workspace_id>/<string:ch_local_id>/<string:ts>', endpoint='message')
 
 if __name__ == '__main__':
     app.run()
