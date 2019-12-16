@@ -16,6 +16,7 @@ class SlackChannel(db.Model):
     created = Column(DateTime, nullable=False, comment='Channel Create Datetime')
     topic = Column(Text, comment='Channel Topic')
     purpose = Column(Text, comment='Channel Purpose')
+    delete_flg = Column(Boolean, nullable=False, default=False, comment='Delete Channel Flag')
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
     updated_at = Column(DateTime, nullable=False, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
     workspace = relationship('SlackWorkspace')
@@ -28,4 +29,4 @@ class SlackChannel(db.Model):
         self.created = from_timestamp(channel['created'])
         self.topic = channel['topic']['value']
         self.purpose = channel['purpose']['value']
-
+        self.delete_flg = False

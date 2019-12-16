@@ -21,6 +21,7 @@ def run(workspace_id, commit=True):
     if code != 200:
         logger.warn('API レスポンスエラー: code={}, response={}'.format(code, res))
         return 1
+    
     for channel in res['channels']:
         # 1件取得
         slackChannel = SlackChannel.query \
