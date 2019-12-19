@@ -1,6 +1,5 @@
-import 'typeface-roboto';
-import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 import React from 'react'
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface LayoutProp {
   children: any
