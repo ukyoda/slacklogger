@@ -1,4 +1,5 @@
 import React from 'react'
+import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
 type LayoutProp = {
   children: any

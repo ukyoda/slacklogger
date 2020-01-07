@@ -9,6 +9,8 @@ services:
     volumes:
       - ./app:/root/app
     command: bash
+    ports:
+      - 3000:3000
     links:
       - slackapi:api
     environment:
