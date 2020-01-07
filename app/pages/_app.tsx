@@ -2,16 +2,9 @@
  * Next.jsでは、_app.tsnが絶対に呼び出されるらしい。
  */
 import React from 'react'
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import Head from 'next/head'
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import { library } from '@fortawesome/fontawesome-svg-core'; //fontawesomeのコアファイル
-import { fab } from '@fortawesome/free-brands-svg-icons'; //fontawesomeのbrandアイコンのインポート
-import { fas } from '@fortawesome/free-solid-svg-icons'; //fontawesomeのsolidアイコンのインポート
-import { far } from '@fortawesome/free-regular-svg-icons'; //fontawesomeのregularアイコンのインポート
-
-library.add(fab, fas, far); //他のコンポーネントから簡単に呼び出せるようにするための登録処理？
 
 type MyProps = {
   Component: any,
@@ -35,13 +28,13 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     return (
-      <Container>
+      <div>
         <Head>
           <title>Slackログびゅ〜あ</title>
-          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" cross-origin="anonymous"></link>
+          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossOrigin="anonymous"></link>
         </Head>
         <Component {...pageProps} />
-      </Container>
+      </div>
     );
   }
 }

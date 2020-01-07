@@ -3,6 +3,7 @@ import React from 'react'
 import Sidebar from "react-sidebar";
 import SideMenu from '../components/sidemenu';
 import { Navbar } from 'react-bootstrap';
+import Link from "next/link";
 import getMQL from '../libs/utils/mediaquery';
 interface State {
   sidebarOpen: boolean,
@@ -23,6 +24,7 @@ export default class PageB extends React.Component<any, State> {
     super(props)
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this)
+    this.onClickMenuIcon = this.onClickMenuIcon.bind(this)
   }
 
   onSetSidebarOpen(open: boolean) {
@@ -33,6 +35,12 @@ export default class PageB extends React.Component<any, State> {
     if (this.mql !== null) {
       this.setState({ sidebarDocked: this.mql.matches, sidebarOpen: this.mql.matches });
     }
+  }
+
+  onClickMenuIcon (e: React.MouseEvent) {
+    e.preventDefault()
+    const currentState = this.state.sidebarOpen
+    this.onSetSidebarOpen(!currentState)
   }
 
   componentDidMount() {
@@ -55,12 +63,20 @@ export default class PageB extends React.Component<any, State> {
       >
         <div>
           <Navbar bg="dark" expand="lg" variant="dark" className="text-white">
-            <Navbar.Text>
-              <a href="#" className="navbar-toggler-icon"></a>
-            </Navbar.Text>
-            <Navbar.Brand href="/">Slackびゅ〜あ</Navbar.Brand>
+            <Navbar.Brand>
+              <span
+                className="fas fa-bars"
+                onClick={this.onClickMenuIcon}
+                style={{ padding: "0 10px", cursor: "pointer" }}
+              />
+              <Link href="/">
+                <a className="navbar-brand">Slackびゅ〜あ</a>
+              </Link>
+            </Navbar.Brand>
           </Navbar>
-          <button onClick={() => this.onSetSidebarOpen(!this.state.sidebarOpen)}>
+          <button
+            onClick={() => this.onSetSidebarOpen(!this.state.sidebarOpen)}
+          >
             Open sidebar
           </button>
         </div>
