@@ -22,7 +22,8 @@
     "resolveJsonModule": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "experimentalDecorators": true
   },
   "exclude": ["dist", ".next", "out"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
