@@ -13,7 +13,7 @@ export default class SideMenu extends React.Component<Props, States> {
     super(props)
   }
 
-  componentWillMount () {
+  componentDidMount () {
     if (slackWorkspaces.state !== 'done') {
       slackWorkspaces.fetch()
     }
@@ -47,7 +47,7 @@ export default class SideMenu extends React.Component<Props, States> {
       return (
         <Nav.Link as="span" key={key}>
           <Link href={link} as={linkAs}>
-            <a className="text-white">{name}</a>
+            <a className="text-light">{name}</a>
           </Link>
         </Nav.Link>
       );

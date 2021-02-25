@@ -2,8 +2,7 @@ import React from 'react'
 // import { Container } from 'react-bootstrap'
 import Sidebar from "react-sidebar";
 import SideMenu from '../components/sidemenu';
-import { Navbar } from 'react-bootstrap';
-import Link from "next/link";
+import { Navbar, Container } from 'react-bootstrap';
 import getMQL from '../libs/utils/mediaquery';
 interface State {
   sidebarOpen: boolean,
@@ -69,16 +68,14 @@ export default class PageB extends React.Component<any, State> {
                 onClick={this.onClickMenuIcon}
                 style={{ padding: "0 10px", cursor: "pointer" }}
               />
-              <Link href="/">
-                <a className="navbar-brand">Slackびゅ〜あ</a>
-              </Link>
+              <span>ここは「ワークスペース名 > チャンネル名」</span>
             </Navbar.Brand>
           </Navbar>
-          <button
-            onClick={() => this.onSetSidebarOpen(!this.state.sidebarOpen)}
-          >
-            Open sidebar
-          </button>
+          <Container fluid>
+            <div style={{ padding: "50px" }}>
+              <h1>Hello World</h1>
+            </div>
+          </Container>
         </div>
       </Sidebar>
     );

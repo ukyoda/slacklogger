@@ -20,6 +20,7 @@ export class SlackChannelList {
   private url = '/api/v1/slack/ch'
   @observable channels: SlackChannel[] = []
   @observable state:string = 'pending'
+  @observable wsid:string|null = null
   constructor() {
     this.find = this.find.bind(this)
   }
@@ -42,6 +43,7 @@ export class SlackChannelList {
   async fetch(workspaceId: string) {
     const url = `${this.url}/${workspaceId}`
     this.state = 'pending'
+    this.wsid = workspaceId
     try {
       const res = await axios.get(url)
       runInAction(() => {
@@ -58,6 +60,13 @@ export class SlackChannelList {
 
   find (id: string) {
     return this.channels.find((value) => value.id === id)
+  }
+
+  has(wsid: string) {
+    if (this.state !== 'done') {
+      return false
+    }
+    return this.channels[0].workspace.id === wsid
   }
 
 }
