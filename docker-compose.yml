@@ -1,6 +1,21 @@
 version: '2.4'
 
 services:
+  app:
+    build:
+      context: app
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - ./app:/root/app
+    command: bash
+    ports:
+      - 3000:3000
+    links:
+      - slackapi:api
+    environment:
+      TZ: ${TZ:-Asia/Tokyo}
+
 
   slackapi:
     build:
@@ -9,7 +24,7 @@ services:
     tty: true
     volumes:
       - ./slackapi:/root/slackapi
-    command: /bin/bash
+    command: flask run -h 0.0.0.0 -p 3030
     links:
       - mysql:db
       - redis:redis

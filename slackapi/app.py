@@ -13,7 +13,9 @@ app.config.from_object(BaseConfig)
 # Setup Model (SQLAlchemy)
 # ---------------------------------------
 from libs.models import db
+from flask_migrate import Migrate
 db.init_app(app)
+migrate = Migrate(app, db) 
 
 # Setup Jobs (Click)
 # ---------------------------------------
